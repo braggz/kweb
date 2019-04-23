@@ -1,0 +1,12 @@
+body{
+	background-color:##e6eeff;
+}
+h1{
+	text-align:center;
+}
+div.loginPage{
+	margin-right:30;
+	margin-left:40%;
+	margin-top:15%;
+	background-color:#999999;
+}

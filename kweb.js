@@ -1,15 +1,22 @@
 #!/usr/bin/env node
-const http = require('http');
-
-const hostname = '192.168.1.239';
-const port = 80;
-
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
+const express = require('express');
+const app = express();
+var bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'pug');
+const server = app.listen(80, () => {
+  console.log(`Express running → PORT ${server.address().port}`);
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+app.get('/', (req, res) => {
+	console.log("test");
+	res.render('index');
+  });
+app.post('/api/users', function(req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+    
+
+    res.send(username + ' ' + password );
 });
