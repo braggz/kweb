@@ -30,7 +30,7 @@ https.createServer({key,cert}, app).listen(443, () => { //Starts the https serve
   console.log('Https Connection')
 })
 
-var con = mysql.createConnection({ // Connects to the https server, the password for this one is changed for protection
+var con = mysql.createConnection({ // Connects to the mySQL server, the password for this one is changed for protection
   host: "localhost",
   user: "kweb",
   password: "password",
