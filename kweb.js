@@ -40,7 +40,6 @@ var con = mysql.createConnection({ // Connects to the mySQL server, the password
 
 app.get('/', (req, res) => {
 	if(req.secure){ 
-		
 		con.query("SELECT * FROM user WHERE username='"+req.cookies.userName+"'",function(err,result,fields){ // Here i am using cookies to greet the user when they have logged in in the past
 			if(result.length>0){
 				res.render('index',{test:'Welcome Back '+req.cookies.userName});
@@ -54,7 +53,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/login', function(req, res) {	//Checks the sql database to see if a users username and password is legitamate
-  	
   	con.query("SELECT password FROM user WHERE username ='" +req.body.username+"'", function (err, result, fields) {
 		if(result.length>0){
     			var sqlResult = result[0].password; 
@@ -80,8 +78,7 @@ app.post('/createAcc', function(req,res){
 
 app.post('/newAcc', function(req,res){//The page for users to create an account
 	if(req.body.secret =='chicken'){
-  
-		con.query("SELECT username FROM user WHERE username = '"+req.body.username+"'",function(err,result,fields){
+  		con.query("SELECT username FROM user WHERE username = '"+req.body.username+"'",function(err,result,fields){
 			if(result.length <=0){
 				con.query("INSERT INTO user (user_id,username,password) VALUES (null,'"+req.body.username+"', '"+req.body.password+"' )" ,function (err, result) {
    					console.log("1 record inserted");
