@@ -20,6 +20,7 @@ app.use(bodyParser.json());	//Setting up the bodyparser and cookie parser to be 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('public'))
+
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (!fs.existsSync('/var/www/Kweb/uploads/'+req.cookies.userName)){
@@ -135,31 +136,19 @@ app.post('/newAcc', function(req,res){//The page for users to create an account
 
 app.post('/catPics',function(req,res){
 	res.render('./pugFiles/catPics');
-
-		var cat="";
-
-		for(var i =0;i<1;i++){
-		
-		cat+=("<p>test</p>");
-	
-	
-		}
-		
-		cat.toString();
-		
-
-		res.render('./pugFiles/catPics',{test:cat});
-			console.log(res.header.test);
-		//res.send(cat);
+	res.render('./pugFiles/catPics',{test:cat});
+	console.log(res.header.test);
+	//res.send(cat);
 			
 
 });
 app.post('/admin', upload.single('theFile'), (req, res) => {
  res.render('index');
 });
+
 app.post('/delUsers', function(req, res) {
 	con.query("DELETE FROM user WHERE isAdmin IS NULL",function(err,result,fields){
-	console.log('All users deleted');
-	res.render('pugFiles/loginSuc');
-});
+		console.log('All users deleted');
+		res.render('pugFiles/loginSuc');
+	});
 });
