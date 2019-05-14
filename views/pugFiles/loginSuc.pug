@@ -1,4 +1,14 @@
 <html>
 <h1> Login Successful</h1>
-<img src = "https://news.nationalgeographic.com/2018/05/animals-cats-training-pets/#/01-cat-training-IMG_3727.jpg">
+<form action ="/admin" id = "admin" method = "post" name="upload" enctype="multipart/form-data">
+<input type="file" name="theFile" id="upload">
+<input type="submit" value="Submit" name="upload">
+
+</form>
+<form action ="/delUsers" id = "adminDel" method = "post" name="upload" enctype="multipart/form-data" style="display:#{areAdmin}">
+
+<input type="submit" value="Delete all users except admins" name="del">
+</form>
+
+
 <html>
