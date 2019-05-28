@@ -86,10 +86,16 @@ app.post('/login', function(req, res) {	//Checks the sql database to see if a us
 			if(req.body.password==sqlResult){
 				res.cookie("userName",req.body.username);//Adds a cookies to the users pc if they login successfully 
 					con.query("SELECT isAdmin FROM user WHERE username ='" +req.body.username+"'", function (err, result, fields) {
-						if(result[0].isAdmin ==1){res.render('./pugFiles/loginSuc',)
-							console.log(result[0].isAdmin);
+						 
+
+						if(result[0].isAdmin ==1){
+						 con.query("SELECT path FROM file WHERE username ='" +req.body.username+"'", function (err, result, fields) {
+
+						console.log(result);
+						res.render('./pugFiles/loginSuc',{test:result})
+							});
 			//				document.getElementById("adminDel").style.display='block';							
-						;}
+						}
 						else{res.render('./pugFiles/loginSuc',)
 						 console.log(result[0].isAdmin);
 			//			document.getElementById("adminDel").style.display='none';
@@ -143,31 +149,29 @@ app.post('/newAcc', function(req,res){//The page for users to create an account
 
 
 app.post('/catPics',function(req,res){
+	var test =[];
 	
-	var test2='';
-	for(var i =0; i<1;i++){
-		if(i<=0){
-		test2+='img src="test.jpg">'}
-		else if(i ==4){test2+= '<img src="test.jpg"'}
-		else{ test2+='<img src="test.jpg">'}}
-		console.log(test2);
-		res.render('./pugFiles/catPics',{test:test2});
-	
-	console.log(res.header.test);
-	//res.send(cat);
+	for(var i=0; i<5;i++){
+	test.push('test.jpg');
+	}	
+	res.render('pugFiles/catPics.pug',{test:test});	
+		//res.send(cat);
 			
 
 });
+
 app.get('/test', (req, res) => {
-
+	res.download('/var/www/Kweb/keith.txt');
 });
+
 app.post('/admin', upload.single('theFile'), (req, res) => {
- res.render('index');
+	con.query("INSERT INTO file (username,name,path) VALUES ('"+req.cookies.userName+"', '"+req.cookies.userName+'.'+ Date.now()+"','/var/www/Kweb/uploads/"+req.cookies.userName+"')" ,function (err, result) {
+	if(err){console.log(err);}	
+	console.log('file logged');
 });
 
-app.post('/delUsers', function(req, res) {
-	con.query("DELETE FROM user WHERE isAdmin IS NULL",function(err,result,fields){
-		console.log('All users deleted');
-		res.render('pugFiles/loginSuc');
-	});
+
+		res.render('index');
 });
+
+
