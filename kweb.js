@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var keygen=require("keygenerator");
-var mysql = require('mysql');	// All the Dependencies the program needs
+var mysql = require('mysql');   // All the Dependencies the program needs
 var express = require('express');
 var ejs= require('ejs');
 const app = express();
@@ -17,30 +17,28 @@ app.set('view engine', 'pug');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(bodyParser.json());	//Setting up the bodyparser and cookie parser to be used
+app.use(bodyParser.json());     //Setting up the bodyparser and cookie parser to be used
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('public'))
+var fileName="test";
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (!fs.existsSync('/var/www/Kweb/uploads/'+req.cookies.userName)){
-	console.log('dir created');
+        console.log('dir created');
     fs.mkdirSync('/var/www/Kweb/uploads/'+req.cookies.userName);
 }
-	cb(null, '/var/www/Kweb/uploads/'+req.cookies.userName)
+        cb(null, '/var/www/Kweb/uploads/'+req.cookies.userName)
   },
   filename: function (req, file, cb) {
-    cb(null, req.cookies.userName+'.'+file.fieldname + '-' + Date.now())
-  }
+        let extArray = file.mimetype.split("/");
+        let extension = extArray[extArray.length - 1];
+        fileName=req.cookies.userName+'.'+Date.now()+'.'+extension;
+        cb(null, req.cookies.userName+'.'+Date.now()+'.'+extension)
+        }
 })
-
 var upload = multer({ storage: storage })
- 
-
-
- 
-
 
 var options = {		//Creates json object to store information about the https files
 	key: key,
@@ -64,7 +62,6 @@ var con = mysql.createConnection({ // Connects to the mySQL server, the password
 
 app.get('/', (req, res) => {
 	
-	
 	if(req.secure){ 
 		con.query("SELECT * FROM user WHERE username='"+req.cookies.userName+"'",function(err,result,fields){ // Here i am using cookies to greet the user when they have logged in in the past
 			if(result.length>0){
@@ -86,25 +83,14 @@ app.post('/login', function(req, res) {	//Checks the sql database to see if a us
 			if(req.body.password==sqlResult){
 				res.cookie("userName",req.body.username);//Adds a cookies to the users pc if they login successfully 
 					con.query("SELECT isAdmin FROM user WHERE username ='" +req.body.username+"'", function (err, result, fields) {
-						 
-
-						if(result[0].isAdmin ==1){
-						 con.query("SELECT path FROM file WHERE username ='" +req.body.username+"'", function (err, result, fields) {
-
-						console.log(result);
-						res.render('./pugFiles/loginSuc',{test:result})
+						con.query("SELECT cName FROM file WHERE username ='" +req.body.username+"'", function (err, result, fields) {
+							if(result.length != null){
+								res.render('./pugFiles/loginSuc',{fileNames:result})
+							}
+							else{ res.render('./pugFiles/loginSuc',{fileNames:0})}
 							});
-			//				document.getElementById("adminDel").style.display='block';							
-						}
-						else{res.render('./pugFiles/loginSuc',)
-						 console.log(result[0].isAdmin);
-			//			document.getElementById("adminDel").style.display='none';
-
-						;}
-				});
-			
-				
-			;}
+					});
+			}
 			else{
 				res.render('index', {test:'Bad Password'});
 			} 
@@ -117,8 +103,7 @@ app.post('/login', function(req, res) {	//Checks the sql database to see if a us
  });
 
 app.post('/createAcc', function(req,res){
-		var file = __dirname + '//keith.txt';
-	console.log(file);	
+	var file = __dirname + '//keith.txt';	
  	res.download('/var/www/Kweb/keith.txt');
 	res.render('./pugFiles/createAcc');
 	
@@ -146,32 +131,39 @@ app.post('/newAcc', function(req,res){//The page for users to create an account
 
 });
 
-
-
 app.post('/catPics',function(req,res){
-	var test =[];
-	
+	var test;
 	for(var i=0; i<5;i++){
-	test.push('test.jpg');
+		test.push('test.jpg');
 	}	
-	res.render('pugFiles/catPics.pug',{test:test});	
-		//res.send(cat);
-			
-
+	res.render('pugFiles/catPics.pug',{test:test});			
 });
 
-app.get('/test', (req, res) => {
-	res.download('/var/www/Kweb/keith.txt');
+app.get('/downloadFile', (req, res) => {
+	con.query("SELECT path,name FROM file WHERE cName = '"+req.query.downloadBut+"'",function(err,result,fields){
+		path = result[0].path;
+		name = result[0].name; 
+		res.download(path+'/'+name);	
+        	});
 });
 
+app.get('/deleteFile',(req,res) => {
+	con.query("SELECT path,name FROM file WHERE cName = '"+req.query.delBut+"'",function(err,result,fields){
+		console.log(result[0].path+'/'+result[0].name);
+		fs.unlink(result[0].path+'/'+result[0].name,function(err){
+		console.log('File Deleted');
+		});		
+	});
+	con.query("DELETE FROM file WHERE cName = '"+req.query.delBut+"'",function(err,result,fields){	
+		res.redirect('/');
+	});
+});
+	
 app.post('/admin', upload.single('theFile'), (req, res) => {
-	con.query("INSERT INTO file (username,name,path) VALUES ('"+req.cookies.userName+"', '"+req.cookies.userName+'.'+ Date.now()+"','/var/www/Kweb/uploads/"+req.cookies.userName+"')" ,function (err, result) {
-	if(err){console.log(err);}	
-	console.log('file logged');
+	
+	con.query("INSERT INTO file (username,name,path,cName) VALUES ('"+req.cookies.userName+"', '"+fileName+"','/var/www/Kweb/uploads/"+req.cookies.userName+"','"+req.body.fileName+"')" ,function (err, result) {
+		if(err){console.log(err);}	
+		console.log('file logged');
 });
-
-
-		res.render('index');
+	res.redirect('/');
 });
-
-
