@@ -11,7 +11,7 @@
 	<h1>Welcome to Keith's Website</h1>
 	<div class = "loginPage">
 		<p>Please Login</p>
-		<form method="post" action="/newAcc" class="form">
+		<form method="post" action="/createAcc" class="form">
 			<p>Username:<br></p>
 			<input type = "text" name = "username" id ="username"><br>
 			<p>Password:test<br></p>
@@ -19,6 +19,10 @@
 			<p>Secret Code</p><br>
 			<input type="password" name="secret" id="secret"><br>
 			<input type="submit" value="Create Account" >
+			</form>
+			<form method="get" action = "/">
+			<input type ="submit" value='Go Back'>
+				
 			</form>
 			<p>#{test}</p>			
 

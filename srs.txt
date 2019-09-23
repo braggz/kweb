@@ -1,6 +1,0 @@
-SRS 
-SIMPLE DATA STORAGE AND RETRIEVAL SERVER
-1. Create a Login portal where users can log in or create an account
-2. Authenticate users using cookies
-3. Allow users to upload/download content to the server
-* Possibly set up encyption for user protection (only if I finish the above tasks)

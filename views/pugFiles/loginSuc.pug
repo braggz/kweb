@@ -1,21 +1,13 @@
 <html>
 <h1> Login Successful</h1>
-<form action ="/admin" id = "admin" method = "post" name="upload" enctype="multipart/form-data">
-<input type="file" name="theFile" id="upload">
-<input type="submit" value="Submit" name="upload">
+ form(method='get' action='/')
+  input(type='submit' value='Go Back')
+   
 
-</form>
-<form action ="/delUsers" id = "adminDel" method = "post" name="upload" enctype="multipart/form-data" style="display:#{areAdmin}">
-
-<input type="submit" value="Delete all users except admins" name="del">
-</form>
-div
+ h Users:
+  ul
+   each val in test 
+    li= val       
   
-  div
-   each val in test
-    form
-     button=val.path
-	
-   p test
 
 <html>
