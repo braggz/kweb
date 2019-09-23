@@ -1,0 +1,112 @@
+#!/usr/bin/env node
+var keygen=require("keygenerator");
+//var mysql = require('mysql');   // All the Dependencies the program needs
+var express = require('express');
+var ejs= require('ejs');
+const app = express();
+var cookieParser = require('cookie-parser');
+var bodyParser = require("body-parser");
+var formidable = require('formidable');
+const multer = require('multer');
+app.set('view engine', 'pug');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(bodyParser.json());     //Setting up the bodyparser and cookie parser to be used
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(express.static('public'))
+//My own functions
+var startServer = require('./start_server.js');
+var startSql = require('./start_sql.js');
+var index = require('./index.js');
+var login = require('./login.js');
+var createAcc = require('./create_acc.js');
+startServer.startServer(app);//Starts the server with a seperate function
+var con = startSql.startSql();//Connects to the sql server
+var indexInfo="test";
+console.log(createAcc.submitted+' omg');
+//module.exports={indexInfo:'test2'};
+app.get('/', (req, res) => {
+  console.log(createAcc.submitted+' omg');
+
+  index.index(req,res,con,indexInfo);
+  indexInfo='';
+   //Makes sure the user is ussing https and then displays the home page
+});
+
+
+app.post('/login', function(req, res) {	//Checks the sql database to see if a users username and password is legitamate
+  login.login(req,res,con);
+});
+app.get('/createAcc', function(req,res){
+  res.render('./pugFiles/createAcc');
+});
+app.post('/createAcc', function(req,res){//Renders the create account screen
+  createAcc.createAcc(req,res,con, function(result){
+	indexInfo=result;	
+	res.redirect('/');	
+	
+});
+  //indexInfo=createAcc.indexInfo;
+   
+	
+/* var test1;
+        if(req.body.secret =='chicken'){
+                con.query("SELECT username FROM user WHERE username = '"+req.body.username+"'",function(err,result,fields){
+                        if(err) throw err;
+                        if(result.length <=0){
+                                con.query("INSERT INTO user (user_id,username,password) VALUES (null,'"+req.body.username+"', '"+req.body.password+"' )" ,function (err, result) {
+                                        if(err) throw err;
+                                        console.log("1 record inserted");
+                                        indexInfo="Account Created";
+					res.redirect('/');
+                                });
+
+                        }
+                        else{
+				
+                                res.render('./pugFiles/createAcc', {test:'Username Already Used'});
+                        }
+
+                });
+        }
+        else{
+                        res.render('./pugFiles/createAcc', {test:'Secret Code is Incorrect'});
+
+        }
+
+
+
+
+
+}*/
+});
+
+/*app.post('/newAcc', function(req,res){//The page for users to create an account
+	var test1;
+	if(req.body.secret =='chicken'){
+  		con.query("SELECT username FROM user WHERE username = '"+req.body.username+"'",function(err,result,fields){
+			if(err) throw err;
+			if(result.length <=0){
+				con.query("INSERT INTO user (user_id,username,password) VALUES (null,'"+req.body.username+"', '"+req.body.password+"' )" ,function (err, result) {
+   					if(err) throw err;
+					console.log("1 record inserted");
+					res.render('index',{indexInfo:'Account Created'});
+				});
+	
+			}
+			else{
+				res.render('./pugFiles/createAcc', {test:'Username Already Used'});
+			}
+
+		});
+	}
+	else{
+			res.render('./pugFiles/createAcc'/*, {test:'Secret Code is Incorrect'});
+				
+	}
+
+});*/
+
+
