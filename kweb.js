@@ -22,7 +22,7 @@ var login = require('./login.js');
 var createAcc = require('./create_acc.js');
 startServer.startServer(app);//Starts the server with a seperate function
 var con = startSql.startSql();//Connects to the sql server
-
+var orders = require('./orders.js');
 var indexInfo;//The variable that stores text to display on index screen
 var displayCookie=false;
 
@@ -51,4 +51,9 @@ app.post('/createAcc', function(req,res){//Chechs that a user properly fills out
         displayCookie=true;	
 	res.redirect('/');	
   });
+});
+
+app.post('/orders', function(req,res){
+  orders.orders(req,res,con);  
+
 });
