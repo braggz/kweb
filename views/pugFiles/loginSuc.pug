@@ -4,7 +4,8 @@
   input(type='submit' value='Go Back')
  form(method='post' action='/orders')
   input(type='submit' value='View Orders')   
-
+ form(method = 'get' action='/newOrder')
+  input(type='submit' value="New Order")
  h Users:
   ul
    each val in test 

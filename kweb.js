@@ -20,6 +20,7 @@ var startSql = require('./start_sql.js');
 var index = require('./index.js');
 var login = require('./login.js');
 var createAcc = require('./create_acc.js');
+var newOrder = require('./new_order.js');
 startServer.startServer(app);//Starts the server with a seperate function
 var con = startSql.startSql();//Connects to the sql server
 var orders = require('./orders.js');
@@ -55,5 +56,14 @@ app.post('/createAcc', function(req,res){//Chechs that a user properly fills out
 
 app.post('/orders', function(req,res){
   orders.orders(req,res,con);  
+
+});
+app.post('/newOrder', function(req,res){
+  newOrder.newOrder(req,res,con);  
+
+});
+
+app.get('/newOrder', function(req,res){
+  res.render('/newOrder'); 
 
 });

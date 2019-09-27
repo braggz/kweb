@@ -1,0 +1,18 @@
+html
+ body
+  div
+   form(action = "/newOrder" method="post")
+    p Order Number:
+    input(type = "text" name ="orderNumber")
+    p Part Number:
+    input(type = "text" name ="partNumber")
+    p Priority
+    input(type = "text" name ="priority")
+    p Status:
+    input(type = "text" name ="status1")
+    p Comments:
+    input(type = "textarea" name ="comments")
+    input(type = "submit" value="Submit Order")
+
+   form(action="/orders" method="post")
+    input(type="submit" value="Go Back")
