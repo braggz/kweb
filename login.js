@@ -14,6 +14,7 @@ module.exports = {
 	    if(err) throw err;
             if(result.length != null){
               res.cookie('username',req.body.username);
+              console.log(result);
               res.render('./pugFiles/loginSuc',{fileNames:result,test:usersInDatabase})
             }  
             else{ res.render('./pugFiles/loginSuc',{fileNames:0,test:usersInDataBase})}

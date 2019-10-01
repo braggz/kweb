@@ -3,15 +3,20 @@ html
   h Orders
   table(border= '1px solid black')
    tr
+    th Edit/Delete
+    th ID
     th Order Number
     th Part Number
     th Priority 
     th Status
     th Comments
-   each val in test
+   each val in orderNum
     tr
-     td= val 
-     td= val
-     td= val
-     td= val
-     td= val
+     td
+      input(type= "checkbox" name= val.id)
+     td= val.id 
+     td= val.ordernumber
+     td= val.partnumber
+     td= val.priority
+     td= val.status
+     td= val.comments

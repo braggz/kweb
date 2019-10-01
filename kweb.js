@@ -43,7 +43,7 @@ app.post('/login', function(req, res) {	//Checks the sql database to see if a us
 });
 
 app.get('/createAcc', function(req,res){//Renders the Create Account Screen
-  res.render('./pugFiles/createAcc');
+  createAcc.createAcc(req,res,con); 
 });
 
 app.post('/createAcc', function(req,res){//Chechs that a user properly fills out forms and then inserts it into the database
@@ -58,12 +58,24 @@ app.post('/orders', function(req,res){
   orders.orders(req,res,con);  
 
 });
-app.post('/newOrder', function(req,res){
-  newOrder.newOrder(req,res,con);  
 
+app.get('/orders', function(req,res){
+   orders.orders(req,res,con); 
+
+});
+
+
+app.post('/newOrder', function(req,res){
+  newOrder.newOrder(req,res,con, function(result){  
+   if(result){
+     res.redirect('/orders')
+   } 
+  });
 });
 
 app.get('/newOrder', function(req,res){
-  res.render('/newOrder'); 
+ newOrder.newOrder(req,res,con); 
 
 });
+
+
