@@ -1,22 +1,26 @@
 html 
  body
   h Orders
-  table(border= '1px solid black')
-   tr
-    th Edit/Delete
-    th ID
-    th Order Number
-    th Part Number
-    th Priority 
-    th Status
-    th Comments
-   each val in orderNum
+  form(method="post" action="/orders") 
+   table(border= '1px solid black') 
     tr
-     td
-      input(type= "checkbox" name= val.id)
-     td= val.id 
-     td= val.ordernumber
-     td= val.partnumber
-     td= val.priority
-     td= val.status
-     td= val.comments
+     th Edit/Delete
+     th ID
+     th Order Number
+     th Part Number
+     th Priority 
+     th Status
+     th Comments
+    each val in orderNum
+     tr
+      td
+       input(type= "checkbox" name= "checked" value=val.id)
+      td= val.id 
+      td= val.ordernumber
+      td= val.partnumber
+      td= val.priority
+      td= val.status
+      td= val.comments
+   input(type="submit")
+  form(method="get" action="/login")
+   input(type="submit" value="Go Back")

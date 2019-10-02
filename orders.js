@@ -18,7 +18,8 @@ module.exports = {
          com[i]=result[i].comments;
        
 	}
-console.log(test);
+//console.log(test);
+	console.log(req.body.checked);
 //        console.log(test);
 	res.render('./pugFiles/orders.pug',{orderNum:test});
               
