@@ -8,8 +8,9 @@
   input(type='submit' value="New Order")
  h Users:
   ul
-   each val in test 
-    li= val       
+   if test
+    each val in test 
+     li= val       
   
 
 <html>

@@ -21,6 +21,7 @@ var index = require('./index.js');
 var login = require('./login.js');
 var createAcc = require('./create_acc.js');
 var newOrder = require('./new_order.js');
+var modifyOrders = require('./modify_orders.js');
 startServer.startServer(app);//Starts the server with a seperate function
 var con = startSql.startSql();//Connects to the sql server
 var orders = require('./orders.js');
@@ -33,6 +34,10 @@ app.get('/', (req, res) => {
    index.index(req,res,con,indexInfo);
    displayCookie=false;
  });
+
+app.get('/login', function(req, res) {
+ res.render('./pugFiles/loginSuc.pug');
+});
 
 app.post('/login', function(req, res) {	//Checks the sql database to see if a users username and password is legitamate
   login.login(req,res,con, function(result){
@@ -78,4 +83,6 @@ app.get('/newOrder', function(req,res){
 
 });
 
-
+app.post('/modifyOrders', function(req,res){
+  modifyOrders.modifyOrders(req,res,con);
+});

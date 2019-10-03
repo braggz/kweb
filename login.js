@@ -1,5 +1,6 @@
 module.exports = {
   login:function(req,res,con,callback){
+    
     con.query("SELECT password FROM user WHERE username ='" +req.body.username+"'", function (err, result, fields) {
     var usersInDatabase=[];
     if(err) throw err;

@@ -1,7 +1,7 @@
 html 
  body
   h Orders
-  form(method="post" action="/orders") 
+  form(method="post" action="/modifyOrders") 
    table(border= '1px solid black') 
     tr
      th Edit/Delete
@@ -21,6 +21,7 @@ html
       td= val.priority
       td= val.status
       td= val.comments
-   input(type="submit")
+   input(type="submit" name = "del" value="delete")
+   input(type="submit" name = "mod" value="modify")
   form(method="get" action="/login")
    input(type="submit" value="Go Back")
